@@ -5,11 +5,13 @@ import configuration
 def post_new_orders():
     response = requests.post(configuration.URL + configuration.CREATE_ORDERS_PATH,
                              json=data.body)
-    return response.json()["track"]
+    return response
 
-def new_track():
-    return str(post_new_orders())
+def pull_out_track():
+    response = requests.get(configuration.URL + configuration.GET_ORDERS_PATH)
+    track = response.json()["orders"][0]["track"]
+    return str(track)
 def get_orders_track():
-    response = requests.get(configuration.URL + configuration.GET_ORDERS_PATH_TRACK + new_track())
+    response = requests.get(configuration.URL + configuration.GET_ORDERS_PATH_TRACK + pull_out_track())
     return response
 
